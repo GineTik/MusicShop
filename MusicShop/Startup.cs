@@ -31,8 +31,20 @@ namespace MusicShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op => 
+            services.AddDbContext<DataContext>(op => 
+                op.UseSqlServer(Configuration.GetConnectionString("cs1"))
+            );
+            
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MusicShop", Version = "v1" });
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
@@ -43,20 +55,9 @@ namespace MusicShop
                     ValidAudience = Configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                    
                 }
             );
-            
 
-            services.AddDbContext<DataContext>(op => 
-                op.UseSqlServer(Configuration.GetConnectionString("cs1"))
-            );
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MusicShop", Version = "v1" });
-            });
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

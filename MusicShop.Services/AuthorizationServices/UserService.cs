@@ -8,7 +8,11 @@ namespace MusicShop.Services.AuthorizationServices
 {
     public class UserService : IUserService
     {
+        public UserService()
+        {
 
-        
+        }
+
+
     }
 }
