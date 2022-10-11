@@ -10,7 +10,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MusicShop.Core.Entities;
 using MusicShop.DataAccess.EF;
+using MusicShop.DataAccess.Repository.Implementations;
+using MusicShop.DataAccess.Repository.Interfaces;
+using MusicShop.Services.AuthorizationServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +48,12 @@ namespace MusicShop
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MusicShop", Version = "v1" });
             });
 
+
+            services.AddTransient<ITokenServices, TokenServices>();
+            services.AddTransient<
+                IRepository<User, int>,
+                Repository<User, int> >();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
@@ -74,6 +84,7 @@ namespace MusicShop
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

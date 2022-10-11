@@ -1,16 +1,17 @@
 ﻿using MusicShop.Core.Entities;
 using MusicShop.DataAccess.EF;
-using MusicShop.DataAccess.Repository.Implementations;
+using MusicShop.DataAccess.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicShop.DataAccess.Repository.Interfaces
+namespace MusicShop.DataAccess.Repository.Implementations
 {
-    public class Repository<TEntity> : IRepository<TEntity>
-        where TEntity : BaseEntity
+    public class Repository<TEntity, TKey> : IRepository<TEntity>
+        where TEntity : IBaseEntity
+        where TKey : IEquatable<TKey>
     {
         private readonly DataContext _db;
 

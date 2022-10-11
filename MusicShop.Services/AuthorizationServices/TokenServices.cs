@@ -24,7 +24,6 @@ namespace MusicShop.Services.AuthorizationServices
             // ---------------------------------------------------------------------------------
             // В клейми додати роль юзера 
 
-
             JwtSecurityToken jwt = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
@@ -45,7 +44,26 @@ namespace MusicShop.Services.AuthorizationServices
 
         public bool IsTokenValid(string key, string issuer, string audience, string token)
         {
-            throw new NotImplementedException();
+            var keyBytes = Encoding.UTF8.GetBytes(key);
+            var securityKey = new SymmetricSecurityKey(keyBytes);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true, 
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = securityKey
+                }, out SecurityToken validToken);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

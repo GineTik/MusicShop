@@ -26,6 +26,7 @@ namespace MusicShop.WebHost.Controllers
         [HttpPost("Signin")]
         public IActionResult Signin(UserRequest userRequest)
         {
+            
             return Ok();
         }
 
