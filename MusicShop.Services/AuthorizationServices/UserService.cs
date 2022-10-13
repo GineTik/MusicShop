@@ -1,43 +1,42 @@
 ﻿using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
 using MusicShop.DataAccess.Repository.Interfaces;
-using System;
+using MusicShop.Services.HasherServices;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicShop.Services.AuthorizationServices
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<User, int> _repository;
+        private readonly IRepository<User> _repository;
+        private readonly IPasswordService _passwordService;
 
-        public UserService(IRepository<User, int> repository)
+        public UserService(IRepository<User> repository, IPasswordService passwordService)
         {
-            this._repository = repository;
+            _repository = repository;
+            _passwordService = passwordService;
+        }
+
+        public void AddUser(UserDTO userDTO)
+        {
+            var user = new User()
+            {
+                Email = userDTO.Email,
+                UserName = userDTO.Username,
+                PasswordHash = _passwordService.HashPassword(userDTO.Password, userDTO),
+            };
+
+            _repository.Add(user);
+        }
+
+        public User GetUser(int id)
+        {
+            return _repository.GetById(id);
         }
 
         public IEnumerable<User> GetAll()
         {
             return _repository.GetAll();
-        }
-
-        public void AddUser(UserDTO user)
-        {
-            //_repository.Add(new User
-            //{
-            //    Email = user.Email,
-            //    UserName = user.Username,
-                
-
-
-            //});
-        }
-
-        public User GetUser(UserDTO user)
-        {
-            throw new NotImplementedException();
         }
     }
 }
