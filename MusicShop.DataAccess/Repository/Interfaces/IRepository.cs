@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicShop.DataAccess.Repository.Implementations
+namespace MusicShop.DataAccess.Repository.Interfaces
 {
     public interface IRepository<TEntity, TKey> : IDisposable 
         where TEntity : IBaseEntity
