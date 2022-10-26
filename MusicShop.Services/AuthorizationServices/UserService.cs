@@ -3,6 +3,7 @@ using MusicShop.Core.Entities;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.HasherServices;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MusicShop.Services.AuthorizationServices
 {
