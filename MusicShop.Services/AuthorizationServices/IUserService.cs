@@ -6,7 +6,7 @@ namespace MusicShop.Services.AuthorizationServices
 {
     public interface IUserService
     {
-        void AddUser(UserDTO user);
+        void AddUser(UserDTO dto);
         User GetUser(int id);
         IEnumerable<User> GetAll();
     }
