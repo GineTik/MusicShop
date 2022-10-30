@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using MusicShop.Core.Entities;
-using MusicShop.WebHost.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using MusicShop.Core.DTO;
+using MusicShop.Services.AuthorizationServices;
+using MusicShop.Core.WebHost.DTO;
+using Microsoft.Extensions.Configuration;
+using System.Net;
 
 namespace MusicShop.WebHost.Controllers
 {
@@ -14,6 +11,12 @@ namespace MusicShop.WebHost.Controllers
     [ApiController]
     public class TestAuthorizationController : ControllerBase
     {
+        private readonly IUserService _userService;
+
+        public TestAuthorizationController(IUserService userService)
+        {
+            _userService = userService;
+        }
 
         [HttpGet("Test")]
         public IActionResult Test()
@@ -24,16 +27,31 @@ namespace MusicShop.WebHost.Controllers
         }
 
         [HttpPost("Signin")]
-        public IActionResult Signin(UserRequest userRequest)
+        public IActionResult Signin(UserRequest request)
         {
-            
-            return Ok();
+            var dto = new UserDTO()
+            {
+                Email = request.Email,
+                Username = request.Username,
+                Password = request.Password,
+            };
+
+            var result = _userService.TryLogin(dto);
+            return StatusCode((int)result.Code, result);
         }
 
         [HttpPost("Signup")]
-        public IActionResult Signup()
+        public IActionResult Signup(UserRequest request)
         {
-            return Ok();
+            var dto = new UserDTO()
+            {
+                Email = request.Email,
+                Username = request.Username,
+                Password = request.Password,
+            };
+
+            var result = _userService.TryRegistration(dto);
+            return StatusCode((int)result.Code, result);
         }
     }
 }

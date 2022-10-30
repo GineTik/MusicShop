@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using MusicShop.DataAccess.EF;
 using MusicShop.DataAccess.Repository.Implementations;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.AuthorizationServices;
+using MusicShop.Services.HasherServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +52,10 @@ namespace MusicShop
 
 
             services.AddTransient<ITokenServices, TokenServices>();
-            services.AddTransient<
-                IRepository<User, int>,
-                Repository<User, int> >();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPasswordService, PasswordService>();
+            services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()

@@ -9,7 +9,7 @@ namespace MusicShop.DataAccess.Repository.Implementations
     public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class, IBaseEntity
     {
-        private readonly DataContext _db;
+        protected readonly DataContext _db;
 
         public Repository(DataContext dataContext)
         {
@@ -19,6 +19,7 @@ namespace MusicShop.DataAccess.Repository.Implementations
         public void Add(TEntity entity)
         {
             _db.Set<TEntity>().Add(entity);
+            _db.SaveChanges();
         }
 
         public void Dispose()
