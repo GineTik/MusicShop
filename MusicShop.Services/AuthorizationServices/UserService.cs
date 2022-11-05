@@ -50,12 +50,7 @@ namespace MusicShop.Services.AuthorizationServices
             if (user == null)
                 return UserResponse.NotAcceptable;
 
-            var token = _tokenService.BuildToken(
-                _configuration["Jwt:Key"],
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
-                user
-            );
+            var token = _tokenService.BuildToken(user);
 
             if (_passwordService.VerifyHashedPassword(user.PasswordHash, dto))
                 return UserResponse.Success(token);
@@ -72,12 +67,7 @@ namespace MusicShop.Services.AuthorizationServices
             
             var addedUser = AddUser(dto);
             // зарефакторити метод BuildToken
-            var token = _tokenService.BuildToken(
-                _configuration["Jwt:Key"],
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
-                addedUser
-            );
+            var token = _tokenService.BuildToken(addedUser);
 
             return UserResponse.Success(token);
         }

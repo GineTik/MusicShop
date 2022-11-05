@@ -9,7 +9,7 @@ namespace MusicShop.Services.AuthorizationServices
 {
     public interface ITokenServices
     {
-        string BuildToken(string key, string issuer, string audience, User user);
-        bool IsTokenValid(string key, string issuer, string audience, string token);
+        string BuildToken(User user);
+        bool IsTokenValid(string token);
     }
 }

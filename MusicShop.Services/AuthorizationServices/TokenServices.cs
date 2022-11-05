@@ -7,12 +7,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace MusicShop.Services.AuthorizationServices
 {
     public class TokenServices : ITokenServices
     {
-        public string BuildToken(string key, string issuer,string audience, User user)
+        private readonly string _key;
+        private readonly string _issuer;
+        private readonly string _audience;
+
+        private readonly IConfiguration _configuration;
+
+        public TokenServices(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            
+            _key = _configuration["Jwt:Key"];
+            _issuer = _configuration["Jwt:Issuer"];
+            _audience = _configuration["Jwt:Audience"];
+        }
+
+
+        public string BuildToken(User user)
         {
             // Тут буде бато проблем
             // Важливо дотримуватись регламенту 
@@ -25,8 +42,8 @@ namespace MusicShop.Services.AuthorizationServices
             // В клейми додати роль юзера 
 
             JwtSecurityToken jwt = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
+                issuer: _issuer,
+                audience: _audience,
                 claims: new[]
                 {
                     new Claim( ClaimTypes.Email, user.Email),
@@ -34,7 +51,7 @@ namespace MusicShop.Services.AuthorizationServices
                 },
                 expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
                     SecurityAlgorithms.HmacSha256Signature)
                 );
             return new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -42,9 +59,9 @@ namespace MusicShop.Services.AuthorizationServices
 
        
 
-        public bool IsTokenValid(string key, string issuer, string audience, string token)
+        public bool IsTokenValid(string token)
         {
-            var keyBytes = Encoding.UTF8.GetBytes(key);
+            var keyBytes = Encoding.UTF8.GetBytes(_key);
             var securityKey = new SymmetricSecurityKey(keyBytes);
             var tokenHandler = new JwtSecurityTokenHandler();
             try
@@ -54,8 +71,8 @@ namespace MusicShop.Services.AuthorizationServices
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = true, 
-                    ValidIssuer = issuer,
-                    ValidAudience = audience,
+                    ValidIssuer = _issuer,
+                    ValidAudience = _audience,
                     IssuerSigningKey = securityKey
                 }, out SecurityToken validToken);
             }
