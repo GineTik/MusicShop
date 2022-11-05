@@ -66,7 +66,6 @@ namespace MusicShop.Services.AuthorizationServices
                 return UserResponse.NotAcceptable;
             
             var addedUser = AddUser(dto);
-            // зарефакторити метод BuildToken
             var token = _tokenService.BuildToken(addedUser);
 
             return UserResponse.Success(token);
