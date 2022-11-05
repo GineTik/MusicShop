@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
 using MusicShop.Core.WebHost.DTO;
@@ -14,29 +15,20 @@ namespace MusicShop.Services.AuthorizationServices
         private readonly IPasswordService _passwordService;
         private readonly ITokenServices _tokenService;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IPasswordService passwordService, IConfiguration configuration, ITokenServices tokenService)
+        public UserService(IUserRepository repository, IPasswordService passwordService, IConfiguration configuration, ITokenServices tokenService, IMapper mapper)
         {
             _repository = repository;
             _passwordService = passwordService;
             _configuration = configuration;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         public User AddUser(UserDTO userDTO)
         {
-            var user = new User()
-            {
-                Email = userDTO.Email,
-                UserName = userDTO.Username,
-                PasswordHash = _passwordService.HashPassword(userDTO),
-                EmailConfirmed = false,
-                TwoFactorEnabled = false,
-                PhoneNumberConfirmed = false,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-            };
-
+            var user = _mapper.Map<User>(userDTO);
             _repository.Add(user);
             return user; // можуть бути колізії
         }

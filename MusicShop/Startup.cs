@@ -18,6 +18,7 @@ using MusicShop.DataAccess.Repository.Implementations;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.AuthorizationServices;
 using MusicShop.Services.HasherServices;
+using MusicShop.WebHost.AutoMapper.Profiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,8 @@ namespace MusicShop
                 }
             );
 
+            // adding automappers profiles for DI
+            services.AddAutoMapper(typeof(UserProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
