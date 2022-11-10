@@ -62,12 +62,11 @@ namespace MusicShop.Services.AuthorizationServices
             if (user == null)
                 return UserResponse.AuthorizationFailed;
 
+            if (_passwordService.VerifyHashedPassword(user.PasswordHash, dto) == false)
+                return UserResponse.AuthorizationFailed;
+                
             var token = _tokenService.BuildToken(user);
-
-            if (_passwordService.VerifyHashedPassword(user.PasswordHash, dto))
-                return UserResponse.Success(token);
-
-            return UserResponse.AuthorizationFailed;
+            return UserResponse.Success(token);
         }
 
         public UserResponse TryRegistration(UserDTO dto)
@@ -81,8 +80,7 @@ namespace MusicShop.Services.AuthorizationServices
                 return UserResponse.AuthorizationFailed;
             
             var addedUser = AddUser(dto);
-            var token = _tokenService.BuildToken(addedUser);
-
+            var token = _tokenService.BuildToken(addedUser)
             return UserResponse.Success(token);
         }
     }
