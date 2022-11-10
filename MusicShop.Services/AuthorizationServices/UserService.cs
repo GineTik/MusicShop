@@ -80,7 +80,7 @@ namespace MusicShop.Services.AuthorizationServices
                 return UserResponse.AuthorizationFailed;
             
             var addedUser = AddUser(dto);
-            var token = _tokenService.BuildToken(addedUser)
+            var token = _tokenService.BuildToken(addedUser);
             return UserResponse.Success(token);
         }
     }
