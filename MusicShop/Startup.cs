@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +19,7 @@ using MusicShop.DataAccess.Repository.Implementations;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.AuthorizationServices;
 using MusicShop.Services.HasherServices;
+using MusicShop.Services.Validators;
 using MusicShop.WebHost.AutoMapper.Profiles;
 using System;
 using System.Collections.Generic;
@@ -75,6 +77,9 @@ namespace MusicShop
 
             // adding automappers profiles for DI
             services.AddAutoMapper(typeof(UserProfile));
+
+            // adding validators
+            services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
