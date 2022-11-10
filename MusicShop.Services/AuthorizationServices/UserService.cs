@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
@@ -16,14 +17,22 @@ namespace MusicShop.Services.AuthorizationServices
         private readonly ITokenServices _tokenService;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly IValidator<UserDTO> _validator;
 
-        public UserService(IUserRepository repository, IPasswordService passwordService, IConfiguration configuration, ITokenServices tokenService, IMapper mapper)
+        public UserService(
+            IUserRepository repository, 
+            IPasswordService passwordService, 
+            IConfiguration configuration, 
+            ITokenServices tokenService, 
+            IMapper mapper,
+            IValidator<UserDTO> validator)
         {
             _repository = repository;
             _passwordService = passwordService;
             _configuration = configuration;
             _tokenService = tokenService;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public User AddUser(UserDTO userDTO)
@@ -45,25 +54,31 @@ namespace MusicShop.Services.AuthorizationServices
 
         public UserResponse TryLogin(UserDTO dto)
         {
-            var user = _repository.GetByEmail(dto.Email);
+            var result = _validator.Validate(dto);
+            if (result.IsValid == false)
+                return UserResponse.ValidationFailed;
 
+            var user = _repository.GetByEmail(dto.Email);
             if (user == null)
-                return UserResponse.NotAcceptable;
+                return UserResponse.AuthorizationFailed;
 
             var token = _tokenService.BuildToken(user);
 
             if (_passwordService.VerifyHashedPassword(user.PasswordHash, dto))
                 return UserResponse.Success(token);
 
-            return UserResponse.NotAcceptable;
+            return UserResponse.AuthorizationFailed;
         }
 
         public UserResponse TryRegistration(UserDTO dto)
         {
-            var user = _repository.GetByEmail(dto.Email);
+            var result = _validator.Validate(dto);
+            if (result.IsValid == false)
+                return UserResponse.ValidationFailed;
 
+            var user = _repository.GetByEmail(dto.Email);
             if (user != null)
-                return UserResponse.NotAcceptable;
+                return UserResponse.AuthorizationFailed;
             
             var addedUser = AddUser(dto);
             var token = _tokenService.BuildToken(addedUser);

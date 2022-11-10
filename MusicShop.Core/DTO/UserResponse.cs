@@ -11,12 +11,14 @@ namespace MusicShop.Core.WebHost.DTO
         public StatusCodes Code { get; set; }
         public string Token { get; set; }
 
-
+        public UserResponse(StatusCodes code) =>
+            (Code) = (code);
 
         public UserResponse(StatusCodes code, string token) =>
             (Code, Token) = (code, token);
 
-        public static UserResponse Success(string token) => new UserResponse(StatusCodes.Success, token);
-        public static UserResponse NotAcceptable => new UserResponse(StatusCodes.NotAcceptable, null);
+        public static UserResponse Success(string token) => new UserResponse(StatusCodes.Success, token); // успішно
+        public static UserResponse AuthorizationFailed => new UserResponse(StatusCodes.NotAcceptable); // не прийнято
+        public static UserResponse ValidationFailed => new UserResponse(StatusCodes.BadRequest);
     }
 }
