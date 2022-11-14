@@ -58,7 +58,7 @@ namespace MusicShop
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
