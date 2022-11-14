@@ -26,5 +26,23 @@ namespace MusicShop.Controllers
         {
             return Ok("Hello 2");
         }
+
+
+        [HttpGet("GetRoles")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetRoles()
+        {
+            return Ok("Roles list");
+        }
+
+
+        [HttpGet("About")]
+        public IActionResult About()
+        {
+            
+            
+            return Ok(User.FindFirst("Id").Value);
+            
+        }
     }
 }

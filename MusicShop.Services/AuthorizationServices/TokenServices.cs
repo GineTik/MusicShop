@@ -48,6 +48,7 @@ namespace MusicShop.Services.AuthorizationServices
                 {
                     new Claim( ClaimTypes.Email, user.Email),
                     new Claim("Id", user.Id.ToString())
+                    
                 },
                 expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: new SigningCredentials(
