@@ -21,6 +21,7 @@ using MusicShop.Services.AuthorizationServices;
 using MusicShop.Services.HasherServices;
 using MusicShop.Services.Validators;
 using MusicShop.WebHost.AutoMapper.Profiles;
+using MusicShop.WebHost.MiddlewareComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,7 @@ namespace MusicShop
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -105,11 +107,16 @@ namespace MusicShop
 
             //});
 
+            
 
             app.UseRouting();
 
+
+            app.UseMiddleware<FirstInitDataMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {

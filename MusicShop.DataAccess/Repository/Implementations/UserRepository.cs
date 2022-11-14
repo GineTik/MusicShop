@@ -14,6 +14,8 @@ namespace MusicShop.DataAccess.Repository.Implementations
 
         public User GetByEmail(string email)
         {
+
+            
             return _db.Users.FirstOrDefault(x => x.Email == email);
         }
     }

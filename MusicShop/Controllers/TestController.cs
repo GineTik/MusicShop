@@ -16,6 +16,8 @@ namespace MusicShop.Controllers
         [HttpGet("Test")]
         public IActionResult Test()
         {
+            var a = this.User;
+            
             return Ok("Hello ");
         }
 

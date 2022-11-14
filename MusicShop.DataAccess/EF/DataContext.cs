@@ -12,9 +12,18 @@ namespace MusicShop.DataAccess.EF
 {
     public class DataContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
+        
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Music> Musics { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        
+        
         public DataContext(DbContextOptions options) : base(options)
         {
-
+         
         }
+
+
+        
     }
 }
