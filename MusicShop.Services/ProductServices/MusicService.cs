@@ -6,7 +6,7 @@ using MusicShop.Services.Validators;
 
 namespace MusicShop.Services.ProductServices
 {
-    public class MusicService
+    public class MusicService : IMusicService
     {
         private readonly MusicRepository _musicRepository;
         private readonly MusicDTOValidator _musicDTOValidator;
