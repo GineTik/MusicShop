@@ -1,4 +1,5 @@
-﻿using MusicShop.Core.DTO;
+﻿using FluentValidation.Results;
+using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
 
 namespace MusicShop.Services.ProductServices

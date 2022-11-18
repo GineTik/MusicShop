@@ -9,7 +9,6 @@ namespace MusicShop.WebHost.AutoMapper.Profiles
         public MusicProfile()
         {
             CreateMap<MusicDTO, Music>();
-            CreateMap<MusicRequest, MusicDTO>();
         }
     }
 }
