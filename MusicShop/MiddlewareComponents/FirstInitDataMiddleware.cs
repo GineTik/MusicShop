@@ -23,7 +23,6 @@ namespace MusicShop.WebHost.MiddlewareComponents
         private RequestDelegate _next;
 
 
-
         public FirstInitDataMiddleware(RequestDelegate next)
         {
             this._next = next;
@@ -36,16 +35,15 @@ namespace MusicShop.WebHost.MiddlewareComponents
 
             if (_db.Roles.Count() <= 0)
             {
-                _db.Roles.Add(new("User"));
-                _db.Roles.Add(new("Moder"));
-                _db.Roles.Add(new("Admin"));
+                _db.Roles.Add(new Role("Admin"));
+                _db.Roles.Add(new Role("Moder"));
+                _db.Roles.Add(new Role("User"));
                 _db.SaveChanges();
             }
 
-            var roleAdmin = _db.Roles.FirstOrDefault(r => r.Name == "Admin");
-            var userAdminId = _db.UserRoles.FirstOrDefault(ur => ur.RoleId == roleAdmin.Id)?.UserId;
+            
 
-            if (userAdminId == null)
+            if (_db.Users.Count() <= 0 )
             {
 
                 var user = _mapper.Map<User>(new UserDTO()
@@ -55,23 +53,13 @@ namespace MusicShop.WebHost.MiddlewareComponents
                     Username = "string"
                 });
 
+                user.Role = _db.Roles.First();
                 _db.Users.Add(user);
+
                 _db.SaveChanges();
-
-
-                var ru = new IdentityUserRole<int>()
-                {
-                    RoleId = roleAdmin.Id,
-                    UserId = user.Id
-                };
-
-
-                _db.UserRoles.Add(ru);
-
             }
 
-
-            _db.SaveChanges();
+    
         }
 
         public async Task InvokeAsync(HttpContext context, DataContext dataContext, IMapper mapper)

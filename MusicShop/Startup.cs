@@ -59,6 +59,9 @@ namespace MusicShop
             services.AddTransient<ITokenServices, TokenServices>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+
+
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 
@@ -96,18 +99,18 @@ namespace MusicShop
 
             app.UseHttpsRedirection();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var token = context.Session.GetString("Token");
-            //    if (!string.IsNullOrEmpty(token))
-            //    {
-            //        context.Request.Headers.Add("Authorization", "Bearer " + token);
-            //    }
-            //    await next();
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Cookies["Token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                }
+                await next();
 
-            //});
+            });
 
-            
+
 
             app.UseRouting();
 

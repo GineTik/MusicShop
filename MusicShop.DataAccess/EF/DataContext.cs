@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace MusicShop.DataAccess.EF
 {
-    public class DataContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class DataContext : IdentityUserContext<User, int>
     {
         
         public DbSet<Category> Categories { get; set; }
         public DbSet<Music> Musics { get; set; }
         public DbSet<Order> Orders { get; set; }
         
+        public DbSet<Role> Roles { get; set; }
         
         public DataContext(DbContextOptions options) : base(options)
         {
