@@ -19,6 +19,22 @@ namespace MusicShop.DataAccess.Repository.Implementations
             _db = db;
         }
 
-        
+        public Role Get(string name) => _db.Roles.FirstOrDefault(r => r.Name == name);
+
+        public Role GetRoleModer() => Get("Moder");
+        public Role GetRoleAdmin() => Get("Admin");
+        public Role GetRoleUser() => Get("User");
+
+        public User AssignModer(int userId)
+        {
+            var user = _db.Users.FirstOrDefault(u => u.Id == userId);
+            if(user != null)
+            {
+                user.Role = Get("Moder");
+                _db.SaveChanges();
+            }
+
+            return user;
+        }
     }
 }

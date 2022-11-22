@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MusicShop.Core.Entities;
 using MusicShop.DataAccess.Repository.Interfaces;
 using System;
@@ -37,6 +38,14 @@ namespace MusicShop.WebHost.Controllers
         public IActionResult GetUsersByRole(string name)
         {
             return Ok(name);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("GiveModer")]
+        public IActionResult GiveRoleUser(int userId)
+        {
+            return Ok(_roleRepository.AssignModer(userId));
         }
 
     }

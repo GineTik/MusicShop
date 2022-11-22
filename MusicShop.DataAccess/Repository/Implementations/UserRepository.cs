@@ -17,5 +17,7 @@ namespace MusicShop.DataAccess.Repository.Implementations
         {
             return _db.Users.Include(u => u.Role ).FirstOrDefault(x => x.Email == email);
         }
+
+
     }
 }
