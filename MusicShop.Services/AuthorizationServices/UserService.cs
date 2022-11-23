@@ -91,5 +91,20 @@ namespace MusicShop.Services.AuthorizationServices
 
             return UserResponse.Success(token);
         }
+
+        public Order OrderMusic(User user, Music music)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CancleOrderMusic(User user, Music music)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetAllOrders(User user)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

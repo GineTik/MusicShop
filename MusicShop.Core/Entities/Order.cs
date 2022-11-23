@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicShop.Core.DTO.Enums;
+using System;
 
 namespace MusicShop.Core.Entities
 {
@@ -16,6 +17,6 @@ namespace MusicShop.Core.Entities
 
 
 
-        public int Status { get; set; }
+        public StatusOrder Status { get; set; }
     }
 }
