@@ -12,17 +12,29 @@ namespace MusicShop.Controllers
     [Route("[controller]")]
     public class TestController : ControllerBase
     {
-        [Authorize]
+        
         [HttpGet("Test")]
         public IActionResult Test()
-        {
+        {    
             return Ok("Hello ");
         }
 
-        [HttpGet("Test2")]
-        public IActionResult Test2()
+        [Authorize]
+        [HttpGet("ForAuthorizeUser")]
+        public IActionResult ForAuthorizeUser()
         {
-            return Ok("Hello 2");
+            return Ok("For authorize User");
         }
+
+
+        [HttpGet("ForAdmins")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ForAdmin()
+        {
+            return Ok("You admin)))");
+        }
+
+
+
     }
 }

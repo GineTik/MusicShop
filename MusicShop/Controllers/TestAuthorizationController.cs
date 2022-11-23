@@ -24,8 +24,6 @@ namespace MusicShop.WebHost.Controllers
         [HttpGet("Test")]
         public IActionResult Test()
         {
-             
-            
             return Ok();
         }
 
@@ -45,6 +43,12 @@ namespace MusicShop.WebHost.Controllers
 
             var result = _userService.TryRegistration(dto);
             return StatusCode((int)result.Code, result);
+        }
+
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            return Ok(_userService.GetAll());
         }
     }
 }
