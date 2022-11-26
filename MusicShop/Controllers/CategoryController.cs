@@ -20,6 +20,7 @@ namespace MusicShop.WebHost.Controllers
             _categoryService = categoryService;
         }
 
+
         [HttpGet("cetById")]
         public IActionResult GetById(int categoryId)
         {
@@ -43,5 +44,7 @@ namespace MusicShop.WebHost.Controllers
         {
             return Ok(_categoryService.Create(category));
         }
+
+        
     }
 }

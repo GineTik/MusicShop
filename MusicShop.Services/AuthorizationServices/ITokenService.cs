@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MusicShop.Services.AuthorizationServices
 {
-    public interface ITokenServices
+    public interface ITokenService
     {
         string BuildToken(User user);
         bool IsTokenValid(string token);

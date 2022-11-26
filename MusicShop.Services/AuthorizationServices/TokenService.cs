@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace MusicShop.Services.AuthorizationServices
 {
-    public class TokenServices : ITokenServices
+    public class TokenService : ITokenService
     {
         private readonly string _key;
         private readonly string _issuer;
@@ -19,7 +19,7 @@ namespace MusicShop.Services.AuthorizationServices
 
         private readonly IConfiguration _configuration;
 
-        public TokenServices(IConfiguration configuration)
+        public TokenService(IConfiguration configuration)
         {
             _configuration = configuration;
             
@@ -47,7 +47,7 @@ namespace MusicShop.Services.AuthorizationServices
                 claims: new[]
                 {
                     new Claim( ClaimTypes.Email, user.Email),
-                    new Claim( "Id", user.Id.ToString()),
+                    new Claim( "UserId", user.Id.ToString()),
                     new Claim( ClaimTypes.Role, user.Role.Name )
                     
                 },

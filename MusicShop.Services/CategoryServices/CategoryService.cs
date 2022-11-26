@@ -19,27 +19,27 @@ namespace MusicShop.Services.CategoryServices
 
         public Category Create(Category category)
         {
-            throw new NotImplementedException();
+            return _categoryRepository.Add(category);
         }
 
         public bool Delete(int categoryId)
         {
-            throw new NotImplementedException();
+            return _categoryRepository.Remove(categoryId);
         }
 
         public Category Edit(Category category)
         {
-            throw new NotImplementedException();
+            return _categoryRepository.Update(category);
         }
 
         public IEnumerable<Category> GetAll()
         {
-            throw new NotImplementedException();
+            return _categoryRepository.GetAll();
         }
 
         public Category GetById(int categoryId)
         {
-            throw new NotImplementedException();
+            return _categoryRepository.GetById(categoryId);
         }
     }
 }

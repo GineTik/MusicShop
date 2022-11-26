@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MusicShop.Core.Entities;
+using MusicShop.Services.MusicServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,20 @@ namespace MusicShop.WebHost.Controllers
     [ApiController]
     public class MusicController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Index()
+        private readonly IMusicService _musicService;
+
+        public MusicController(IMusicService musicService)
         {
-            throw new NotImplementedException();
+            _musicService = musicService;
+        }
+
+        
+
+
+        [HttpGet("getMusicsByCategory")]
+        public IActionResult GetMusicsByCategory(Category category)
+        {
+            return Ok(_musicService.GetMusicsByCategory(category));
         }
     }
 }
