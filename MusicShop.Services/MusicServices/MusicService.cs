@@ -19,12 +19,15 @@ namespace MusicShop.Services.MusicServices
 
         public Music CreateMusic(Music music)
         {
-            throw new NotImplementedException();
+
+            // додати сповіщувач. Оповістити всіх юзерів.
+            // Краще додати евент. Куди через паблік властивість додамо евенти 
+            return _musicRepository.Add(music);
         }
 
         public bool DeleteMusic(int musicId)
         {
-            throw new NotImplementedException();
+            return _musicRepository.Remove(musicId);
         }
 
         public IEnumerable<Music> GetMusicsByCategory(Category category)
@@ -51,13 +54,13 @@ namespace MusicShop.Services.MusicServices
         {
             throw new NotImplementedException();
         }
-
-        public void SalesOnCategory(Category category)
+        
+        public void AssignDiscountCategory(Category category)
         {
             throw new NotImplementedException();
         }
 
-        public void SalesOnMusic(Music music)
+        public void MusicDiscount(Music music)
         {
             throw new NotImplementedException();
         }
