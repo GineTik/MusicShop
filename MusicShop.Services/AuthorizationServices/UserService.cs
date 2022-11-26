@@ -15,7 +15,7 @@ namespace MusicShop.Services.AuthorizationServices
         private readonly IUserRepository _repository;
         private readonly IRoleRepository _roleRepository;
         private readonly IPasswordService _passwordService;
-        private readonly ITokenServices _tokenService;
+        private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IValidator<UserDTO> _validator;
@@ -25,7 +25,7 @@ namespace MusicShop.Services.AuthorizationServices
             IRoleRepository roleRepository,
             IPasswordService passwordService, 
             IConfiguration configuration, 
-            ITokenServices tokenService, 
+            ITokenService tokenService, 
             IMapper mapper,
             IValidator<UserDTO> validator)
         {
@@ -90,6 +90,21 @@ namespace MusicShop.Services.AuthorizationServices
             var token = _tokenService.BuildToken(addedUser);
 
             return UserResponse.Success(token);
+        }
+
+        public Order OrderMusic(User user, Music music)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CancleOrderMusic(User user, Music music)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetAllOrders(User user)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MusicShop.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicShop.Core.Entities;
 using MusicShop.DataAccess.EF;
 using MusicShop.DataAccess.Repository.Interfaces;
 using System.Collections.Generic;
@@ -16,15 +17,23 @@ namespace MusicShop.DataAccess.Repository.Implementations
             _db = dataContext;
         }
 
-        public void Add(TEntity entity)
+
+        public TEntity Add(TEntity entity)
         {
-            _db.Set<TEntity>().Add(entity);
-            _db.SaveChanges();
+            var e = _db.Set<TEntity>().Add(entity).Entity;
+            SaveChanges();
+            return e;
+            
         }
 
         public void Dispose()
         {
             _db.Dispose();
+        }
+
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
         }
 
         public IEnumerable<TEntity> GetAll()
@@ -37,15 +46,24 @@ namespace MusicShop.DataAccess.Repository.Implementations
             return _db.Set<TEntity>().FirstOrDefault(e => e.Id == id);
         }
 
-        public void Remove(int id)
+        public bool Remove(int id)
         {
             // найти как работает удаление по модели, мб можно изменить сравнение
-            _db.Set<TEntity>().Remove(GetById(id));
+            var e = _db.Set<TEntity>().Remove(GetById(id)).State;
+            SaveChanges();
+
+            if (e == EntityState.Deleted)
+                return true;
+            return false;
         }
 
-        public void Update(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
-            _db.Set<TEntity>().Update(entity);
+            var e = _db.Set<TEntity>().Update(entity).Entity;
+            SaveChanges();
+            return e;
         }
+
+        
     }
 }

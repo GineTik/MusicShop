@@ -11,6 +11,7 @@ namespace MusicShop.WebHost.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleRepository _roleRepository;

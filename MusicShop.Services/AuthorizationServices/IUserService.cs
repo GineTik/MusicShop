@@ -13,5 +13,10 @@ namespace MusicShop.Services.AuthorizationServices
 
         UserResponse TryLogin(UserDTO dto);
         UserResponse TryRegistration(UserDTO dto);
+
+
+        Order OrderMusic(User user,Music music);
+        void CancleOrderMusic(User user, Music music);
+        void GetAllOrders(User user);
     }
 }

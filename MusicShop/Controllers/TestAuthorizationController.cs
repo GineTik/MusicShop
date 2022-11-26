@@ -5,6 +5,8 @@ using MusicShop.Core.WebHost.DTO;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using AutoMapper;
+using System;
+using System.Security.Claims;
 
 namespace MusicShop.WebHost.Controllers
 {
@@ -21,22 +23,23 @@ namespace MusicShop.WebHost.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("Test")]
-        public IActionResult Test()
-        {
-            return Ok();
-        }
-
-        [HttpPost("Signin")]
+        [HttpPost("signin")]
         public IActionResult Signin(UserRequest request)
         {
             var dto = _mapper.Map<UserDTO>(request);
-            
             var result = _userService.TryLogin(dto);
+
+            this.HttpContext.Response.Cookies.Append("Token", result.Token,
+                new Microsoft.AspNetCore.Http.CookieOptions()
+                {
+                    MaxAge = TimeSpan.MaxValue,
+                    Expires = DateTime.UtcNow.AddDays(30)
+                });
+
             return StatusCode((int)result.Code, result);
         }
 
-        [HttpPost("Signup")]
+        [HttpPost("signup")]
         public IActionResult Signup(UserRequest request)
         {
             var dto = _mapper.Map<UserDTO>(request);
@@ -45,10 +48,21 @@ namespace MusicShop.WebHost.Controllers
             return StatusCode((int)result.Code, result);
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             return Ok(_userService.GetAll());
         }
+
+        [HttpGet("myRole")]
+        public IActionResult GetMyRole()
+        {
+            var roleClaim = this.User.FindFirst(ClaimTypes.Role);
+
+            if(roleClaim != null)
+                return Ok(roleClaim.Value);
+            return Ok("https://www.youtube.com/watch?v=Vew1_5oRp8s");
+        }
+        
     }
 }
