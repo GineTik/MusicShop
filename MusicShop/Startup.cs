@@ -18,8 +18,9 @@ using MusicShop.DataAccess.EF;
 using MusicShop.DataAccess.Repository.Implementations;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.AuthorizationServices;
+using MusicShop.Services.CategoryServices;
 using MusicShop.Services.HasherServices;
-using MusicShop.Services.ProductServices;
+using MusicShop.Services.MusicServices;
 using MusicShop.Services.Validators;
 using MusicShop.WebHost.AutoMapper.Profiles;
 using MusicShop.WebHost.MiddlewareComponents;
@@ -56,12 +57,18 @@ namespace MusicShop
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MusicShop", Version = "v1" });
             });
 
-
-            services.AddTransient<ITokenServices, TokenServices>();
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IMusicRepository, MusicRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IMusicService, MusicService>();
+
+            services.AddTransient<IUserService, UserService>();
+            
 
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -71,7 +78,6 @@ namespace MusicShop
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,

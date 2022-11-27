@@ -11,12 +11,12 @@ namespace MusicShop.DataAccess.Repository.Interfaces
         where TEntity : IBaseEntity
         where TKey: IEquatable<TKey>
     {
-        void Add(TEntity entity);
-        void Update(TEntity entity);
-        void Remove(TKey id);
+        TEntity Add(TEntity entity);
+        TEntity Update(TEntity entity);
+        bool Remove(TKey id);
         TEntity GetById(TKey id);
         IEnumerable<TEntity> GetAll();
-        
+        void SaveChanges();
     }
 
     public interface IRepository<TEntity> : IRepository<TEntity, int>

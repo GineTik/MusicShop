@@ -43,7 +43,7 @@ namespace MusicShop.WebHost.MiddlewareComponents
 
             
 
-            if (_db.Users.Count() <= 0 )
+            if (_db.Users.FirstOrDefault( u => u.Email == "admin@gmail.com") == null)
             {
 
                 var user = _mapper.Map<User>(new UserDTO()
@@ -68,6 +68,8 @@ namespace MusicShop.WebHost.MiddlewareComponents
             this._db = dataContext;
 
             init();
+
+            
             await _next.Invoke(context);
         }
     }
