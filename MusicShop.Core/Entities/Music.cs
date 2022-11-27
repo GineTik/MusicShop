@@ -16,5 +16,6 @@ namespace MusicShop.Core.Entities
         public Category Category { get; set; }
 
         public IList<Order> Orders { get; set; }
+        public IList<Discount> Discounts { get; set; }
     }
 }

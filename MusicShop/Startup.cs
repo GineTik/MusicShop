@@ -90,7 +90,7 @@ namespace MusicShop
             );
 
             // adding automappers profiles for DI
-            services.AddAutoMapper(typeof(UserProfile));
+            services.AddAutoMapper(typeof(UserProfile), typeof(MusicProfile), typeof(DiscountProfile));
 
             // adding validators
             services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
@@ -129,7 +129,7 @@ namespace MusicShop
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+
 
             app.UseEndpoints(endpoints =>
             {
