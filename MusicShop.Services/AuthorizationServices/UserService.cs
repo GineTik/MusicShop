@@ -13,6 +13,7 @@ namespace MusicShop.Services.AuthorizationServices
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly IRoleRepository _roleRepository;
         private readonly IPasswordService _passwordService;
         private readonly ITokenServices _tokenService;
         private readonly IConfiguration _configuration;
@@ -20,7 +21,8 @@ namespace MusicShop.Services.AuthorizationServices
         private readonly IValidator<UserDTO> _validator;
 
         public UserService(
-            IUserRepository repository, 
+            IUserRepository repository,
+            IRoleRepository roleRepository,
             IPasswordService passwordService, 
             IConfiguration configuration, 
             ITokenServices tokenService, 
@@ -28,6 +30,7 @@ namespace MusicShop.Services.AuthorizationServices
             IValidator<UserDTO> validator)
         {
             _repository = repository;
+            _roleRepository = roleRepository;
             _passwordService = passwordService;
             _configuration = configuration;
             _tokenService = tokenService;
@@ -38,7 +41,11 @@ namespace MusicShop.Services.AuthorizationServices
         public User AddUser(UserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
+
+            // важливо КОЛИ додаємо роль (до генерації JWT)
+            user.Role = _roleRepository.GetRoleUser();
             _repository.Add(user);
+
             return user; // можуть бути колізії
         }
 
@@ -81,6 +88,7 @@ namespace MusicShop.Services.AuthorizationServices
             
             var addedUser = AddUser(dto);
             var token = _tokenService.BuildToken(addedUser);
+
             return UserResponse.Success(token);
         }
     }

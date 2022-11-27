@@ -47,9 +47,11 @@ namespace MusicShop.Services.AuthorizationServices
                 claims: new[]
                 {
                     new Claim( ClaimTypes.Email, user.Email),
-                    new Claim("Id", user.Id.ToString())
+                    new Claim( "Id", user.Id.ToString()),
+                    new Claim( ClaimTypes.Role, user.Role.Name )
+                    
                 },
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
                     SecurityAlgorithms.HmacSha256Signature)

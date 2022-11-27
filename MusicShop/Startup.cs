@@ -22,6 +22,7 @@ using MusicShop.Services.HasherServices;
 using MusicShop.Services.ProductServices;
 using MusicShop.Services.Validators;
 using MusicShop.WebHost.AutoMapper.Profiles;
+using MusicShop.WebHost.MiddlewareComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,14 +60,18 @@ namespace MusicShop
             services.AddTransient<ITokenServices, TokenServices>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+
+
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddTransient<IMusicRepository, MusicRepository>();
             services.AddTransient<IMusicService, MusicService>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -98,22 +103,27 @@ namespace MusicShop
 
             app.UseHttpsRedirection();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var token = context.Session.GetString("Token");
-            //    if (!string.IsNullOrEmpty(token))
-            //    {
-            //        context.Request.Headers.Add("Authorization", "Bearer " + token);
-            //    }
-            //    await next();
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Cookies["Token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                }
+                await next();
 
-            //});
+            });
+
 
 
             app.UseRouting();
 
+
+            app.UseMiddleware<FirstInitDataMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {
