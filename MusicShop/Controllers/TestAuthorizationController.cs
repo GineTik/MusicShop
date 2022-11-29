@@ -8,6 +8,7 @@ using AutoMapper;
 using System;
 using System.Security.Claims;
 using MusicShop.Core.DTO.Enums;
+using MusicShop.WebHost.Filters.ExceptionFilters;
 
 namespace MusicShop.WebHost.Controllers
 {
@@ -25,6 +26,8 @@ namespace MusicShop.WebHost.Controllers
         }
 
         [HttpPost("signin")]
+        [AuthorizationExceptionFilter]
+        [ValidationExceptionFilter]
         public IActionResult Signin(UserRequest request)
         {
             var dto = _mapper.Map<UserDTO>(request);
@@ -46,6 +49,8 @@ namespace MusicShop.WebHost.Controllers
         }
 
         [HttpPost("signup")]
+        [AuthorizationExceptionFilter]
+        [ValidationExceptionFilter]
         public IActionResult Signup(UserRequest request)
         {
             var dto = _mapper.Map<UserDTO>(request);
