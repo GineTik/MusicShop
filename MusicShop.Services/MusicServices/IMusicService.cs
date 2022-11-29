@@ -23,6 +23,8 @@ namespace MusicShop.Services.MusicServices
 
         void SalesOnCategory(Category category);
         void SalesOnMusic(Music music);
+
+        bool Buy(int musicId, List<int> discountsIds);
         
         // TODO: Взагалі, потрібна таблиця снижки
         // Снижки як для конкретних пісень, так і для групп ( пісні з спільним аттрибутом )

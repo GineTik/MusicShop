@@ -17,6 +17,11 @@ namespace MusicShop.Services.MusicServices
             _musicRepository = musicRepository;
         }
 
+        public bool Buy(int musicId, List<int> discountsIds)
+        {
+            throw new NotImplementedException();
+        }
+
         public Music CreateMusic(Music music)
         {
             throw new NotImplementedException();
