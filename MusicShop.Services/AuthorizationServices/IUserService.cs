@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
-using MusicShop.Core.WebHost.DTO;
 
 namespace MusicShop.Services.AuthorizationServices
 {
@@ -11,9 +10,8 @@ namespace MusicShop.Services.AuthorizationServices
         User GetUser(int id);
         IEnumerable<User> GetAll();
 
-        UserResponse TryLogin(UserDTO dto);
-        UserResponse TryRegistration(UserDTO dto);
-
+        string Login(UserDTO dto);
+        string Registration(UserDTO dto);
 
         Order OrderMusic(User user,Music music);
         void CancleOrderMusic(User user, Music music);

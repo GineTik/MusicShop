@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Moq;
 using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
+using MusicShop.Core.Exceptions;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.AuthorizationServices;
 using MusicShop.Services.HasherServices;
@@ -55,9 +56,9 @@ namespace MusicShop.Tests.UserTests
 
             var userService = new UserService(_repositoryMock.Object, null, _passwordValidatorMock.Object, _tokenMock.Object, null, _validatorMock.Object);
 
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<AuthorizationException>(() =>
             {
-                userService.TryLogin(dto);
+                userService.Login(dto);
             });
         }
 
@@ -68,7 +69,7 @@ namespace MusicShop.Tests.UserTests
             _repositoryMock.Setup(repo => repo.GetByEmail(It.IsAny<string>())).Returns(new User());
 
             var userService = new UserService(_repositoryMock.Object, null, _passwordValidatorMock.Object, _tokenMock.Object, null, _validatorMock.Object);
-            var token = userService.TryLogin(dto);
+            var token = userService.Login(dto);
 
             Assert.NotNull(token);
         }

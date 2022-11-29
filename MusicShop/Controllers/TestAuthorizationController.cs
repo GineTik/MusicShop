@@ -7,6 +7,7 @@ using System.Net;
 using AutoMapper;
 using System;
 using System.Security.Claims;
+using MusicShop.Core.DTO.Enums;
 
 namespace MusicShop.WebHost.Controllers
 {
@@ -27,16 +28,21 @@ namespace MusicShop.WebHost.Controllers
         public IActionResult Signin(UserRequest request)
         {
             var dto = _mapper.Map<UserDTO>(request);
-            var result = _userService.TryLogin(dto);
+            var token = _userService.Login(dto);
 
-            this.HttpContext.Response.Cookies.Append("Token", result.Token,
+            this.HttpContext.Response.Cookies.Append("Token", token,
                 new Microsoft.AspNetCore.Http.CookieOptions()
                 {
                     MaxAge = TimeSpan.MaxValue,
                     Expires = DateTime.UtcNow.AddDays(30)
                 });
 
-            return StatusCode((int)result.Code, result);
+            return Ok(new UserResponse(StatusCodes.Success)
+            {
+                Email = request.Email,
+                Username = request.Username,
+                Token = token,
+            });
         }
 
         [HttpPost("signup")]
@@ -44,8 +50,13 @@ namespace MusicShop.WebHost.Controllers
         {
             var dto = _mapper.Map<UserDTO>(request);
 
-            var result = _userService.TryRegistration(dto);
-            return StatusCode((int)result.Code, result);
+            var token = _userService.Registration(dto);
+            return Ok(new UserResponse(StatusCodes.Success)
+            {
+                Email = request.Email,
+                Username = request.Username,
+                Token = token,
+            });
         }
 
         [HttpGet("getAll")]
