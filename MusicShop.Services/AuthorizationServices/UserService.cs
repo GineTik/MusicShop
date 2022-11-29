@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
 using MusicShop.Core.WebHost.DTO;
@@ -16,7 +15,6 @@ namespace MusicShop.Services.AuthorizationServices
         private readonly IRoleRepository _roleRepository;
         private readonly IPasswordService _passwordService;
         private readonly ITokenService _tokenService;
-        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IValidator<UserDTO> _validator;
 
@@ -24,7 +22,6 @@ namespace MusicShop.Services.AuthorizationServices
             IUserRepository repository,
             IRoleRepository roleRepository,
             IPasswordService passwordService, 
-            IConfiguration configuration, 
             ITokenService tokenService, 
             IMapper mapper,
             IValidator<UserDTO> validator)
@@ -32,7 +29,6 @@ namespace MusicShop.Services.AuthorizationServices
             _repository = repository;
             _roleRepository = roleRepository;
             _passwordService = passwordService;
-            _configuration = configuration;
             _tokenService = tokenService;
             _mapper = mapper;
             _validator = validator;
