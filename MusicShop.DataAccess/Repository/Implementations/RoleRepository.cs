@@ -11,7 +11,6 @@ namespace MusicShop.DataAccess.Repository.Implementations
 {
     public class RoleRepository : Repository<Role>, IRoleRepository
     {
-
         public RoleRepository(DataContext db)
             :base(db)
         {

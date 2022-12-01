@@ -2,9 +2,11 @@
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using MusicShop.Core.DTO;
+using MusicShop.Core.DTO.Enums;
 using MusicShop.Core.Entities;
 using MusicShop.Core.WebHost.DTO;
 using MusicShop.DataAccess.Repository.Interfaces;
+using MusicShop.Services.EmailServices;
 using MusicShop.Services.HasherServices;
 using System.Collections.Generic;
 
@@ -16,6 +18,7 @@ namespace MusicShop.Services.AuthorizationServices
         private readonly IRoleRepository _roleRepository;
         private readonly IPasswordService _passwordService;
         private readonly ITokenService _tokenService;
+        //private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IValidator<UserDTO> _validator;
@@ -25,7 +28,8 @@ namespace MusicShop.Services.AuthorizationServices
             IRoleRepository roleRepository,
             IPasswordService passwordService, 
             IConfiguration configuration, 
-            ITokenService tokenService, 
+            ITokenService tokenService,
+            //IEmailService emailService,
             IMapper mapper,
             IValidator<UserDTO> validator)
         {
@@ -34,6 +38,9 @@ namespace MusicShop.Services.AuthorizationServices
             _passwordService = passwordService;
             _configuration = configuration;
             _tokenService = tokenService;
+            //_emailService = emailService;
+
+
             _mapper = mapper;
             _validator = validator;
         }
@@ -89,7 +96,14 @@ namespace MusicShop.Services.AuthorizationServices
             var addedUser = AddUser(dto);
             var token = _tokenService.BuildToken(addedUser);
 
-            return UserResponse.Success(token);
+            //return UserResponse.Success(token);
+            return new UserResponse()
+            {
+                Code = StatusCodes.Success,
+                Email = addedUser.Email,
+                Token = token,
+                Username = addedUser.UserName
+            };
         }
 
         public Order OrderMusic(User user, Music music)

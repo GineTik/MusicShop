@@ -69,5 +69,15 @@ namespace MusicShop.Services.MusicServices
         {
             throw new NotImplementedException();
         }
+
+        public void SalesOnCategory(Category category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SalesOnMusic(Music music)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
