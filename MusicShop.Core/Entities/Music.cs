@@ -10,12 +10,12 @@ namespace MusicShop.Core.Entities
         public string Description { get; set; }
         public decimal Price { get; set; }
         public byte[] Image { get; set; }
+        public int Count { get; set; }
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
         public IList<Order> Orders { get; set; }
-        
-
+        public IList<Discount> Discounts { get; set; }
     }
 }

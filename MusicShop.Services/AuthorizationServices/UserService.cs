@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using MusicShop.Core.DTO;
 using MusicShop.Core.DTO.Enums;
 using MusicShop.Core.Entities;
+using MusicShop.Core.Exceptions;
 using MusicShop.Core.WebHost.DTO;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.EmailServices;
@@ -36,7 +36,6 @@ namespace MusicShop.Services.AuthorizationServices
             _repository = repository;
             _roleRepository = roleRepository;
             _passwordService = passwordService;
-            _configuration = configuration;
             _tokenService = tokenService;
             //_emailService = emailService;
 
@@ -51,9 +50,7 @@ namespace MusicShop.Services.AuthorizationServices
 
             // важливо КОЛИ додаємо роль (до генерації JWT)
             user.Role = _roleRepository.GetRoleUser();
-            _repository.Add(user);
-
-            return user; // можуть бути колізії
+            return _repository.Add(user);
         }
 
         public User GetUser(int id)
@@ -66,32 +63,32 @@ namespace MusicShop.Services.AuthorizationServices
             return _repository.GetAll();
         }
 
-        public UserResponse TryLogin(UserDTO dto)
+        public string Login(UserDTO dto)
         {
             var result = _validator.Validate(dto);
             if (result.IsValid == false)
-                return UserResponse.ValidationFailed;
+                throw new ValidationException(result.Errors);
 
             var user = _repository.GetByEmail(dto.Email);
             if (user == null)
-                return UserResponse.AuthorizationFailed;
+                throw new AuthorizationException();
 
             if (_passwordService.VerifyHashedPassword(user.PasswordHash, dto) == false)
-                return UserResponse.AuthorizationFailed;
+                throw new AuthorizationException();
                 
             var token = _tokenService.BuildToken(user);
-            return UserResponse.Success(token);
+            return token;
         }
 
-        public UserResponse TryRegistration(UserDTO dto)
+        public string Registration(UserDTO dto)
         {
             var result = _validator.Validate(dto);
             if (result.IsValid == false)
-                return UserResponse.ValidationFailed;
+                throw new ValidationException(result.Errors);
 
             var user = _repository.GetByEmail(dto.Email);
             if (user != null)
-                return UserResponse.AuthorizationFailed;
+                throw new RegistrationException();
             
             var addedUser = AddUser(dto);
             var token = _tokenService.BuildToken(addedUser);

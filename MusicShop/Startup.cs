@@ -84,6 +84,8 @@ namespace MusicShop
 
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddTransient<IMusicRepository, MusicRepository>();
+            services.AddTransient<IMusicService, MusicService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
@@ -100,10 +102,11 @@ namespace MusicShop
             );
 
             // adding automappers profiles for DI
-            services.AddAutoMapper(typeof(UserProfile));
+            services.AddAutoMapper(typeof(UserProfile), typeof(MusicProfile), typeof(DiscountProfile));
 
             // adding validators
             services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
+            services.AddValidatorsFromAssemblyContaining<MusicDTOValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -138,7 +141,7 @@ namespace MusicShop
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+
 
             app.UseEndpoints(endpoints =>
             {
