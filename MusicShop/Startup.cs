@@ -19,8 +19,10 @@ using MusicShop.DataAccess.Repository.Implementations;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.AuthorizationServices;
 using MusicShop.Services.CategoryServices;
+using MusicShop.Services.EmailServices;
 using MusicShop.Services.HasherServices;
 using MusicShop.Services.MusicServices;
+using MusicShop.Services.Utils;
 using MusicShop.Services.Validators;
 using MusicShop.WebHost.AutoMapper.Profiles;
 using MusicShop.WebHost.MiddlewareComponents;
@@ -37,6 +39,7 @@ namespace MusicShop
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+         
         }
 
         public IConfiguration Configuration { get; }
@@ -69,6 +72,15 @@ namespace MusicShop
 
             services.AddTransient<IUserService, UserService>();
             
+
+            var descriptor = new ServiceDescriptor(typeof(EmailSender),
+                    _ => new EmailSender(Configuration["Google:accountForSMTP:Email"], Configuration["Google:accountForSMTP:Password"], "MusicShop"),
+                    ServiceLifetime.Transient);
+            services.Add(descriptor);
+            services.AddTransient<IEmailService, EmailService>( );
+            
+            
+
 
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
