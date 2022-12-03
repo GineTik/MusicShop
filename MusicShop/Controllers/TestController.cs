@@ -46,11 +46,7 @@ namespace MusicShop.Controllers
         [HttpPost("confirm")]
         public IActionResult Confirm([FromForm] string token)
         {
-            _ = HttpContext;
-
             return Ok(token);
         }
-
-        
     }
 }

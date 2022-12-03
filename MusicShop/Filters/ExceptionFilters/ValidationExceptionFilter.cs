@@ -12,7 +12,13 @@ namespace MusicShop.WebHost.Filters.ExceptionFilters
         {
             if (context.Exception is ValidationException exception)
             {
-                context.Result = new ObjectResult(exception.Errors)
+                var response = new
+                {
+                    Code = 400,
+                    Errors = exception.Errors
+                };
+
+                context.Result = new ObjectResult(response)
                 {
                     StatusCode = 400
                 };

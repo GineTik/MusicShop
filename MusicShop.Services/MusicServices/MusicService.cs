@@ -1,41 +1,37 @@
-﻿using MusicShop.Core.Entities;
-using MusicShop.DataAccess.Repository.Interfaces;
+﻿using AutoMapper;
+using MusicShop.Core.DTO;
+using MusicShop.Core.Entities;
+using MusicShop.DataAccess.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicShop.Services.MusicServices
 {
     public class MusicService : IMusicService
     {
-        private readonly IMusicRepository _musicRepository;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MusicService(IMusicRepository musicRepository)
+        public MusicService(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _musicRepository = musicRepository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        public bool Buy(int musicId, List<int> discountsIds)
+        public Music CreateMusic(MusicDTO dto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Music CreateMusic(Music music)
-        {
-
+            var music = _mapper.Map<Music>(dto);
             // додати сповіщувач. Оповістити всіх юзерів.
             // Краще додати евент. Куди через паблік властивість додамо евенти 
-            return _musicRepository.Add(music);
+            return _unitOfWork.Musics.Add(music);
         }
 
         public bool DeleteMusic(int musicId)
         {
-            return _musicRepository.Remove(musicId);
+            return _unitOfWork.Musics.Remove(musicId);
         }
 
-        public IEnumerable<Music> GetMusicsByCategory(Category category)
+        public IEnumerable<Music> GetMusicsByCategoryId(int categoryId)
         {
             throw new NotImplementedException();
         }
@@ -70,7 +66,7 @@ namespace MusicShop.Services.MusicServices
             throw new NotImplementedException();
         }
 
-        public Music Update(Music music)
+        public Music Update(MusicDTO dto)
         {
             throw new NotImplementedException();
         }

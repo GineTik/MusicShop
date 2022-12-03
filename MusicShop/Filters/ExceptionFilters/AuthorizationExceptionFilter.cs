@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using MusicShop.Core.DTO.Enums;
 using MusicShop.Core.Exceptions;
 using System;
 
@@ -13,9 +14,15 @@ namespace MusicShop.WebHost.Filters.ExceptionFilters
             if (context.Exception is AuthorizationException ||
                 context.Exception is RegistrationException)
             {
-                context.Result = new ObjectResult(context.Exception.Message)
+                var response = new 
                 {
-                    StatusCode = 406
+                    Code = StatusCodes.NotAcceptable,
+                    Message = context.Exception.Message
+                };
+
+                context.Result = new ObjectResult(response)
+                {
+                    StatusCode = (int)StatusCodes.NotAcceptable
                 };
             }
         }

@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MusicShop.Core.Entities;
 using MusicShop.Services.MusicServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MusicShop.WebHost.Controllers
 {
@@ -19,13 +15,10 @@ namespace MusicShop.WebHost.Controllers
             _musicService = musicService;
         }
 
-        
-
-
-        [HttpGet("getMusicsByCategory")]
-        public IActionResult GetMusicsByCategory(Category category)
+        [HttpGet("getMusicsByCategoryId")]
+        public IActionResult GetMusicsByCategoryId(int id)
         {
-            return Ok(_musicService.GetMusicsByCategory(category));
+            return Ok(_musicService.GetMusicsByCategoryId(id));
         }
     }
 }

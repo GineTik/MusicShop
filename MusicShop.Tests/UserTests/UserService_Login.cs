@@ -2,12 +2,12 @@
 using FluentValidation.Results;
 using Moq;
 using MusicShop.Core.DTO;
+using MusicShop.Core.DTO.Enums;
 using MusicShop.Core.Entities;
 using MusicShop.Core.Exceptions;
-using MusicShop.DataAccess.Repository.Interfaces;
+using MusicShop.DataAccess.Repository;
 using MusicShop.Services.AuthorizationServices;
 using MusicShop.Services.HasherServices;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -17,8 +17,8 @@ namespace MusicShop.Tests.UserTests
     {
         private readonly Mock<IValidator<UserDTO>> _validatorMock;
         private readonly Mock<IPasswordService> _passwordValidatorMock;
-        private readonly Mock<IUserRepository> _repositoryMock;
         private readonly Mock<ITokenService> _tokenMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
         public UserService_Login()
         {
@@ -37,7 +37,7 @@ namespace MusicShop.Tests.UserTests
                 .Setup(service => service.BuildToken(It.IsAny<User>()))
                 .Returns("");
 
-            _repositoryMock = new();
+            _unitOfWorkMock = new();
         }
 
         public static IEnumerable<object[]> GetUsersForLogin =>
@@ -52,13 +52,13 @@ namespace MusicShop.Tests.UserTests
         [MemberData(nameof(GetUsersForLogin))]
         public void Login_UserDTO_ThrowException(UserDTO dto)
         {
-            _repositoryMock.Setup(repo => repo.GetByEmail(It.IsAny<string>())).Returns(() => null);
+            _unitOfWorkMock.Setup(uow => uow.Users.GetByEmail(It.IsAny<string>())).Returns(() => null);
 
-            var userService = new UserService(_repositoryMock.Object, null, _passwordValidatorMock.Object, _tokenMock.Object, null, _validatorMock.Object);
+            var userService = new UserService(_unitOfWorkMock.Object, _passwordValidatorMock.Object, _tokenMock.Object, null, null, _validatorMock.Object);
 
             Assert.Throws<AuthorizationException>(() =>
             {
-                userService.Login(dto);
+                userService.TryLogin(dto);
             });
         }
 
@@ -66,12 +66,12 @@ namespace MusicShop.Tests.UserTests
         [MemberData(nameof(GetUsersForLogin))]
         public void Login_UserDTO_ReturnToken(UserDTO dto)
         {
-            _repositoryMock.Setup(repo => repo.GetByEmail(It.IsAny<string>())).Returns(new User());
+            _unitOfWorkMock.Setup(uow => uow.Users.GetByEmail(It.IsAny<string>())).Returns(new User());
 
-            var userService = new UserService(_repositoryMock.Object, null, _passwordValidatorMock.Object, _tokenMock.Object, null, _validatorMock.Object);
-            var token = userService.Login(dto);
+            var userService = new UserService(_unitOfWorkMock.Object, _passwordValidatorMock.Object, _tokenMock.Object, null, null, _validatorMock.Object);
+            var response = userService.TryLogin(dto);
 
-            Assert.NotNull(token);
+            Assert.True(response != null && response.Code == StatusCodes.Success);
         }
     }
 }

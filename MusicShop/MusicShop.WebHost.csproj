@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MusicShop.Core\MusicShop.Core.csproj" />
-    <ProjectReference Include="..\MusicShop.DataAccess\MusicShop.DataAccess.csproj" />
     <ProjectReference Include="..\MusicShop.Services\MusicShop.Services.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace MusicShop.Core.Entities

@@ -1,6 +1,6 @@
 ﻿using MusicShop.Core.DTO.Enums;
 
-namespace MusicShop.Core.WebHost.DTO
+namespace MusicShop.Core.DTO
 {
     public class UserResponse
     {

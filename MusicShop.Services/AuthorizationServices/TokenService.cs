@@ -41,6 +41,12 @@ namespace MusicShop.Services.AuthorizationServices
             // ---------------------------------------------------------------------------------
             // В клейми додати роль юзера 
 
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            if (user.Role == null)
+                throw new ArgumentNullException(nameof(user.Role));
+
             JwtSecurityToken jwt = new JwtSecurityToken(
                 issuer: _issuer,
                 audience: _audience,
@@ -63,6 +69,9 @@ namespace MusicShop.Services.AuthorizationServices
 
         public bool IsTokenValid(string token)
         {
+            if (String.IsNullOrEmpty(token))
+                throw new ArgumentException(nameof(token));
+
             var keyBytes = Encoding.UTF8.GetBytes(_key);
             var securityKey = new SymmetricSecurityKey(keyBytes);
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -1,4 +1,4 @@
-﻿namespace MusicShop.Core.WebHost.DTO
+﻿namespace MusicShop.Core.DTO
 {
     public class UserRequest
     {

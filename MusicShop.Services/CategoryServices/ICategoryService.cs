@@ -1,9 +1,6 @@
-﻿using MusicShop.Core.Entities;
-using System;
+﻿using MusicShop.Core.DTO;
+using MusicShop.Core.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicShop.Services.CategoryServices
 {
@@ -11,8 +8,8 @@ namespace MusicShop.Services.CategoryServices
     {
         Category GetById(int categoryId);
         IEnumerable<Category> GetAll();
-        Category Create(Category category);
+        Category Create(CategoryDTO dto);
         bool Delete(int categoryId);
-        Category Edit(Category category);
+        Category Edit(CategoryDTO dto);
     }
 }
