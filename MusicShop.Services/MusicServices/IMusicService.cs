@@ -1,20 +1,17 @@
-﻿using MusicShop.Core.Entities;
-using System;
+﻿using MusicShop.Core.DTO;
+using MusicShop.Core.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicShop.Services.MusicServices
 {
     public interface IMusicService
     {
         
-        Music CreateMusic(Music music);
+        Music CreateMusic(MusicDTO dto);
+        Music Update(MusicDTO dto);
         bool DeleteMusic(int musicId);
-        Music Update(Music music);
 
-        IEnumerable<Music> GetMusicsByCategory(Category category);
+        IEnumerable<Music> GetMusicsByCategoryId(int categoryId);
         IEnumerable<Music> GetMusicsByPriceRange(decimal from, decimal to);
         IEnumerable<Music> GetMusicsByName(string name);
 
@@ -24,8 +21,6 @@ namespace MusicShop.Services.MusicServices
         void SalesOnCategory(Category category);
         void SalesOnMusic(Music music);
 
-        bool Buy(int musicId, List<int> discountsIds);
-        
         // TODO: Взагалі, потрібна таблиця снижки
         // Снижки як для конкретних пісень, так і для групп ( пісні з спільним аттрибутом )
     }

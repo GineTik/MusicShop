@@ -2,7 +2,7 @@
 
 namespace MusicShop.DataAccess.Repository.Interfaces
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface IUserOfWork : IRepository<Category>
     {
 
     }

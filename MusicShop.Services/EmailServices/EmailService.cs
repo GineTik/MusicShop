@@ -1,12 +1,8 @@
 ﻿using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
-using MusicShop.Core.WebHost.DTO;
 using MusicShop.Services.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicShop.Services.EmailServices
 {

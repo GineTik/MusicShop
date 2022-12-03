@@ -10,8 +10,8 @@ namespace MusicShop.Services.AuthorizationServices
         User GetUser(int id);
         IEnumerable<User> GetAll();
 
-        string Login(UserDTO dto);
-        string Registration(UserDTO dto);
+        UserResponse TryLogin(UserDTO dto);
+        UserResponse TryRegistration(UserDTO dto);
 
         Order OrderMusic(User user,Music music);
         void CancleOrderMusic(User user, Music music);

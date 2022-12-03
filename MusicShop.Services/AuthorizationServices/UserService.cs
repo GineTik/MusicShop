@@ -4,7 +4,7 @@ using MusicShop.Core.DTO;
 using MusicShop.Core.DTO.Enums;
 using MusicShop.Core.Entities;
 using MusicShop.Core.Exceptions;
-using MusicShop.Core.WebHost.DTO;
+using MusicShop.DataAccess.Repository;
 using MusicShop.DataAccess.Repository.Interfaces;
 using MusicShop.Services.EmailServices;
 using MusicShop.Services.HasherServices;
@@ -14,32 +14,25 @@ namespace MusicShop.Services.AuthorizationServices
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _repository;
-        private readonly IRoleRepository _roleRepository;
         private readonly IPasswordService _passwordService;
         private readonly ITokenService _tokenService;
-        //private readonly IEmailService _emailService;
-        private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
         private readonly IValidator<UserDTO> _validator;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserService(
-            IUserRepository repository,
-            IRoleRepository roleRepository,
+            IUnitOfWork unitOfWork,
             IPasswordService passwordService, 
-            IConfiguration configuration, 
             ITokenService tokenService,
-            //IEmailService emailService,
+            IEmailService emailService,
             IMapper mapper,
             IValidator<UserDTO> validator)
         {
-            _repository = repository;
-            _roleRepository = roleRepository;
+            _unitOfWork = unitOfWork;
             _passwordService = passwordService;
             _tokenService = tokenService;
-            //_emailService = emailService;
-
-
+            _emailService = emailService;
             _mapper = mapper;
             _validator = validator;
         }
@@ -49,27 +42,27 @@ namespace MusicShop.Services.AuthorizationServices
             var user = _mapper.Map<User>(userDTO);
 
             // важливо КОЛИ додаємо роль (до генерації JWT)
-            user.Role = _roleRepository.GetRoleUser();
-            return _repository.Add(user);
+            user.Role = _unitOfWork.Roles.GetRoleUser();
+            return _unitOfWork.Users.Add(user);
         }
 
         public User GetUser(int id)
         {
-            return _repository.GetById(id);
+            return _unitOfWork.Users.GetById(id);
         }
 
         public IEnumerable<User> GetAll()
         {
-            return _repository.GetAll();
+            return _unitOfWork.Users.GetAll();
         }
 
-        public string Login(UserDTO dto)
+        public UserResponse TryLogin(UserDTO dto)
         {
             var result = _validator.Validate(dto);
             if (result.IsValid == false)
                 throw new ValidationException(result.Errors);
 
-            var user = _repository.GetByEmail(dto.Email);
+            var user = _unitOfWork.Users.GetByEmail(dto.Email);
             if (user == null)
                 throw new AuthorizationException();
 
@@ -77,28 +70,34 @@ namespace MusicShop.Services.AuthorizationServices
                 throw new AuthorizationException();
                 
             var token = _tokenService.BuildToken(user);
-            return token;
+            
+            return new UserResponse()
+            { 
+                Code = StatusCodes.Success,
+                Token = token,
+                Email = user.Email,
+                Username = user.UserName,
+            };
         }
 
-        public string Registration(UserDTO dto)
+        public UserResponse TryRegistration(UserDTO dto)
         {
             var result = _validator.Validate(dto);
             if (result.IsValid == false)
                 throw new ValidationException(result.Errors);
 
-            var user = _repository.GetByEmail(dto.Email);
+            var user = _unitOfWork.Users.GetByEmail(dto.Email);
             if (user != null)
                 throw new RegistrationException();
             
             var addedUser = AddUser(dto);
             var token = _tokenService.BuildToken(addedUser);
 
-            //return UserResponse.Success(token);
             return new UserResponse()
             {
                 Code = StatusCodes.Success,
-                Email = addedUser.Email,
                 Token = token,
+                Email = addedUser.Email,
                 Username = addedUser.UserName
             };
         }

@@ -1,45 +1,50 @@
-﻿using MusicShop.Core.Entities;
-using MusicShop.DataAccess.Repository.Interfaces;
-using System;
+﻿using MusicShop.Core.DTO;
+using MusicShop.Core.Entities;
+using MusicShop.DataAccess.Repository;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicShop.Services.CategoryServices
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(IUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public Category Create(Category category)
+        public Category Create(CategoryDTO dto)
         {
-            return _categoryRepository.Add(category);
+            var category = new Category()
+            {
+                Name = dto.Name,
+            };
+            return _unitOfWork.Categories.Add(category);
         }
 
         public bool Delete(int categoryId)
         {
-            return _categoryRepository.Remove(categoryId);
+            return _unitOfWork.Categories.Remove(categoryId);
         }
 
-        public Category Edit(Category category)
+        public Category Edit(CategoryDTO dto)
         {
-            return _categoryRepository.Update(category);
+            var category = new Category()
+            {
+                Name = dto.Name,
+            };
+            return _unitOfWork.Categories.Update(category);
         }
 
         public IEnumerable<Category> GetAll()
         {
-            return _categoryRepository.GetAll();
+            return _unitOfWork.Categories.GetAll();
         }
 
         public Category GetById(int categoryId)
         {
-            return _categoryRepository.GetById(categoryId);
+            return _unitOfWork.Categories.GetById(categoryId);
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MusicShop.Core.Entities;
-using MusicShop.DataAccess.Repository.Interfaces;
+using MusicShop.Core.DTO;
 using MusicShop.Services.CategoryServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MusicShop.WebHost.Controllers
 {
@@ -20,7 +15,6 @@ namespace MusicShop.WebHost.Controllers
             _categoryService = categoryService;
         }
 
-
         [HttpGet("cetById")]
         public IActionResult GetById(int categoryId)
         {
@@ -34,17 +28,15 @@ namespace MusicShop.WebHost.Controllers
         }
 
         [HttpPost("edit")]
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(CategoryDTO dto)
         {
-            return Ok(_categoryService.Edit(category));
+            return Ok(_categoryService.Edit(dto));
         }
 
         [HttpPost("create")]
-        public IActionResult Create(Category category)
+        public IActionResult Create(CategoryDTO dto)
         {
-            return Ok(_categoryService.Create(category));
+            return Ok(_categoryService.Create(dto));
         }
-
-        
     }
 }

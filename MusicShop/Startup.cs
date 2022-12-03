@@ -1,91 +1,40 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MusicShop.Core.Entities;
-using MusicShop.DataAccess.EF;
-using MusicShop.DataAccess.Repository.Implementations;
-using MusicShop.DataAccess.Repository.Interfaces;
-using MusicShop.Services.AuthorizationServices;
-using MusicShop.Services.CategoryServices;
-using MusicShop.Services.EmailServices;
-using MusicShop.Services.HasherServices;
-using MusicShop.Services.MusicServices;
-using MusicShop.Services.Utils;
-using MusicShop.Services.Validators;
-using MusicShop.WebHost.AutoMapper.Profiles;
 using MusicShop.WebHost.MiddlewareComponents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
+using MusicShop.WebHost.ServiceCollectionExtensions;
 
 namespace MusicShop
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-         
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-
-            services.AddDbContext<DataContext>(op => 
-                op.UseSqlServer(Configuration.GetConnectionString("cs1"))
-            );
-            
+            services.AddDataAccessDependencies();
+            services.AddValidationDependencies();
+            services.AddMapperDependencies();
+            services.AddServiceDependencies();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MusicShop", Version = "v1" });
             });
-
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IRoleRepository, RoleRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IMusicRepository, MusicRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
-
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IMusicService, MusicService>();
-
-            services.AddTransient<IUserService, UserService>();
-            
-
-            var descriptor = new ServiceDescriptor(typeof(EmailSender),
-                    _ => new EmailSender(Configuration["Google:accountForSMTP:Email"], Configuration["Google:accountForSMTP:Password"], "MusicShop"),
-                    ServiceLifetime.Transient);
-            services.Add(descriptor);
-            services.AddTransient<IEmailService, EmailService>( );
-            
-            
-
-
-            services.AddTransient<IPasswordService, PasswordService>();
-            services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
-            services.AddTransient<IMusicRepository, MusicRepository>();
-            services.AddTransient<IMusicService, MusicService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(op =>
                 op.TokenValidationParameters = new TokenValidationParameters()
@@ -100,13 +49,6 @@ namespace MusicShop
                         Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 }
             );
-
-            // adding automappers profiles for DI
-            services.AddAutoMapper(typeof(UserProfile), typeof(MusicProfile), typeof(DiscountProfile));
-
-            // adding validators
-            services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
-            services.AddValidatorsFromAssemblyContaining<MusicDTOValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
