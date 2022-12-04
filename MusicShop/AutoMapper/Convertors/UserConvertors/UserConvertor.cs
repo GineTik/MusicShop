@@ -14,6 +14,7 @@ namespace MusicShop.WebHost.AutoMapper.Convertors.UserConvertors
 
         public User Convert(UserDTO source, User destination, ResolutionContext context)
         {
+            
             return new User()
             {
                 Email = source.Email,

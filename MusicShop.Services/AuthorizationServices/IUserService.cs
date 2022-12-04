@@ -6,15 +6,14 @@ namespace MusicShop.Services.AuthorizationServices
 {
     public interface IUserService
     {
-        User AddUser(UserDTO dto);
-        User GetUser(int id);
-        IEnumerable<User> GetAll();
+        UserDTO GetUser(int id);
+        IEnumerable<UserDTO> GetAll();
 
         UserResponse TryLogin(UserDTO dto);
         UserResponse TryRegistration(UserDTO dto);
 
-        Order OrderMusic(User user,Music music);
-        void CancleOrderMusic(User user, Music music);
-        void GetAllOrders(User user);
+        OrderDTO OrderMusic(UserDTO user, MusicDTO music);
+        void CancleOrderMusic(UserDTO user, MusicDTO music);
+        IEnumerable<OrderDTO> GetAllOrders(UserDTO user);
     }
 }

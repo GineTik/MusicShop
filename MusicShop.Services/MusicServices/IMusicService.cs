@@ -7,19 +7,19 @@ namespace MusicShop.Services.MusicServices
     public interface IMusicService
     {
         
-        Music CreateMusic(MusicDTO dto);
-        Music Update(MusicDTO dto);
+        MusicDTO CreateMusic(MusicDTO dto);
+        MusicDTO Update(MusicDTO dto);
         bool DeleteMusic(int musicId);
 
-        IEnumerable<Music> GetMusicsByCategoryId(int categoryId);
-        IEnumerable<Music> GetMusicsByPriceRange(decimal from, decimal to);
-        IEnumerable<Music> GetMusicsByName(string name);
+        IEnumerable<MusicDTO> GetMusicsByCategoryId(int categoryId);
+        IEnumerable<MusicDTO> GetMusicsByPriceRange(decimal from, decimal to);
+        IEnumerable<MusicDTO> GetMusicsByName(string name);
 
-        IEnumerable<Order> GetOrdersMusic(Music music);
-        IEnumerable<Order> GetOrdersMusic(int musicId);
+        IEnumerable<OrderDTO> GetOrdersMusic(MusicDTO music);
+        IEnumerable<OrderDTO> GetOrdersMusic(int musicId);
 
-        void SalesOnCategory(Category category);
-        void SalesOnMusic(Music music);
+        void SalesOnCategory(CategoryDTO category);
+        void SalesOnMusic(MusicDTO music);
 
         // TODO: Взагалі, потрібна таблиця снижки
         // Снижки як для конкретних пісень, так і для групп ( пісні з спільним аттрибутом )

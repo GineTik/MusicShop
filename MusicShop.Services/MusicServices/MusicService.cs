@@ -18,12 +18,14 @@ namespace MusicShop.Services.MusicServices
             _unitOfWork = unitOfWork;
         }
 
-        public Music CreateMusic(MusicDTO dto)
+        public MusicDTO CreateMusic(MusicDTO dto)
         {
-            var music = _mapper.Map<Music>(dto);
             // додати сповіщувач. Оповістити всіх юзерів.
             // Краще додати евент. Куди через паблік властивість додамо евенти 
-            return _unitOfWork.Musics.Add(music);
+            var music = _mapper.Map<Music>(dto);
+            var result = _unitOfWork.Musics.Add(music);
+
+            return _mapper.Map<MusicDTO>(result);
         }
 
         public bool DeleteMusic(int musicId)
@@ -31,52 +33,52 @@ namespace MusicShop.Services.MusicServices
             return _unitOfWork.Musics.Remove(musicId);
         }
 
-        public IEnumerable<Music> GetMusicsByCategoryId(int categoryId)
+        public IEnumerable<MusicDTO> GetMusicsByCategoryId(int categoryId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Music> GetMusicsByName(string name)
+        public IEnumerable<MusicDTO> GetMusicsByName(string name)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Music> GetMusicsByPriceRange(decimal from, decimal to)
+        public IEnumerable<MusicDTO> GetMusicsByPriceRange(decimal from, decimal to)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetOrdersMusic(Music music)
+        public IEnumerable<OrderDTO> GetOrdersMusic(MusicDTO music)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetOrdersMusic(int musicId)
+        public IEnumerable<OrderDTO> GetOrdersMusic(int musicId)
         {
             throw new NotImplementedException();
         }
         
-        public void AssignDiscountCategory(Category category)
+        public void AssignDiscountCategory(CategoryDTO category)
         {
             throw new NotImplementedException();
         }
 
-        public void MusicDiscount(Music music)
+        public void MusicDiscount(MusicDTO music)
         {
             throw new NotImplementedException();
         }
 
-        public Music Update(MusicDTO dto)
+        public MusicDTO Update(MusicDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public void SalesOnCategory(Category category)
+        public void SalesOnCategory(CategoryDTO category)
         {
             throw new NotImplementedException();
         }
 
-        public void SalesOnMusic(Music music)
+        public void SalesOnMusic(MusicDTO music)
         {
             throw new NotImplementedException();
         }

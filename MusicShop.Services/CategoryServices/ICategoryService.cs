@@ -6,10 +6,10 @@ namespace MusicShop.Services.CategoryServices
 {
     public interface ICategoryService
     {
-        Category GetById(int categoryId);
-        IEnumerable<Category> GetAll();
-        Category Create(CategoryDTO dto);
+        CategoryDTO GetById(int categoryId);
+        IEnumerable<CategoryDTO> GetAll();
+        CategoryDTO Create(CategoryDTO dto);
         bool Delete(int categoryId);
-        Category Edit(CategoryDTO dto);
+        CategoryDTO Edit(CategoryDTO dto);
     }
 }

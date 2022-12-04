@@ -1,4 +1,6 @@
-﻿using MusicShop.Core.Entities;
+﻿using AutoMapper;
+using MusicShop.Core.DTO;
+using MusicShop.Core.Entities;
 using MusicShop.Core.Exceptions;
 using MusicShop.DataAccess.Repository;
 using System.Collections.Generic;
@@ -8,47 +10,57 @@ namespace MusicShop.Services.RoleServices
     public class RoleService : IRoleService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public RoleService(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public RoleService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper= mapper;
         }
 
-        public User AssignModerRoleToUser(int userId)
+        public UserDTO AssignModerRoleToUser(UserDTO user)
         {
-            return _unitOfWork.Roles.AssignModer(userId);
+            return _mapper.Map<UserDTO>( 
+                _unitOfWork.Roles.AssignModer(user.Id)
+                );
         }
 
-        public IEnumerable<Role> GetAllRoles()
+        public IEnumerable<RoleDTO> GetAllRoles()
         {
-            return _unitOfWork.Roles.GetAll();
+            return _mapper.Map<IEnumerable<RoleDTO>>(
+                _unitOfWork.Roles.GetAll()
+                );
         }
 
-        public Role GetRoleByName(string name)
+        public RoleDTO GetRoleByName(string name)
         {
-            return _unitOfWork.Roles.Get(name);
+            return _mapper.Map<RoleDTO>(_unitOfWork.Roles.Get(name));
         }
 
-        public Role GetRoleByUserEmail(string email)
+        public RoleDTO GetRoleByUserEmail(string email)
         {
-            var user = _unitOfWork.Users.GetByEmail(email);
-            return _unitOfWork.Roles.GetById(user.Id);
+            return _mapper.Map<RoleDTO>(
+                _unitOfWork.Users.GetByEmail(email).Role
+                );
+
         }
 
-        public Role GetRoleByUserId(int userId)
+        public RoleDTO GetRoleByUser(UserDTO user)
         {
-            var user = _unitOfWork.Users.GetById(userId);
-            return _unitOfWork.Roles.GetById(user.Id);
+            return GetRoleByUserEmail(user.Email);
         }
 
-        public IEnumerable<User> GetUsersByRoleName(string name)
+        public IEnumerable<UserDTO> GetUsersByRole(RoleDTO role)
         {
-            var role = _unitOfWork.Roles.Get(name);
+            var r = _unitOfWork.Roles.Get(role.Name);
 
-            if (role == null)
+            if (r == null)
                 throw new RoleUndefinedException();
 
-            return _unitOfWork.Users.GetUsersByRoleId(role.Id);
+            return _mapper.Map<IEnumerable<UserDTO>>( 
+                _unitOfWork.Users.GetUsersByRoleId(r.Id)
+                );
         }
+
+       
     }
 }
