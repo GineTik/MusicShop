@@ -33,6 +33,13 @@ namespace MusicShop.Services.MusicServices
             return _unitOfWork.Musics.Remove(musicId);
         }
 
+        public IEnumerable<MusicDTO> GetAll()
+        {
+            return _mapper.Map<IEnumerable<MusicDTO>>(
+                _unitOfWork.Musics.GetAll()
+                );
+        }
+
         public IEnumerable<MusicDTO> GetMusicsByCategoryId(int categoryId)
         {
             throw new NotImplementedException();
@@ -70,7 +77,9 @@ namespace MusicShop.Services.MusicServices
 
         public MusicDTO Update(MusicDTO dto)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<MusicDTO>(
+                _unitOfWork.Musics.Update( 
+                    _mapper.Map<Music>(dto) ));
         }
 
         public void SalesOnCategory(CategoryDTO category)

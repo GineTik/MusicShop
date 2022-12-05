@@ -2,6 +2,7 @@
 using MusicShop.Core.Entities;
 using MusicShop.DataAccess.EF;
 using MusicShop.DataAccess.Repository.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,12 +49,17 @@ namespace MusicShop.DataAccess.Repository.Implementations
 
         public bool Remove(int id)
         {
-            // найти как работает удаление по модели, мб можно изменить сравнение
-            var e = _db.Set<TEntity>().Remove(GetById(id)).State;
-            SaveChanges();
+            var entity = GetById(id);
+            if (entity == null)
+                throw new ArgumentException($"Could not find object with this id: {id}");
 
+            var e = _db.Set<TEntity>().Remove(entity).State;
             if (e == EntityState.Deleted)
+            {
+                SaveChanges();
                 return true;
+            }
+
             return false;
         }
 

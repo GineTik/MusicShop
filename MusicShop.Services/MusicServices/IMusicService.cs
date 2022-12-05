@@ -10,6 +10,7 @@ namespace MusicShop.Services.MusicServices
         MusicDTO CreateMusic(MusicDTO dto);
         MusicDTO Update(MusicDTO dto);
         bool DeleteMusic(int musicId);
+        IEnumerable<MusicDTO> GetAll();
 
         IEnumerable<MusicDTO> GetMusicsByCategoryId(int categoryId);
         IEnumerable<MusicDTO> GetMusicsByPriceRange(decimal from, decimal to);

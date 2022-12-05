@@ -14,12 +14,12 @@ namespace MusicShop.Services.CategoryServices
         public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public CategoryDTO Create(CategoryDTO dto)
         {
             var category = _mapper.Map<Category>(dto);
-
             return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.Add(category));
         }
 

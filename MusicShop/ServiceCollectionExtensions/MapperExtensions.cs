@@ -8,7 +8,13 @@ namespace MusicShop.WebHost.ServiceCollectionExtensions
         public static void AddMapperDependencies(this IServiceCollection services)
         {
             // adding automappers profiles for DI
-            services.AddAutoMapper(typeof(UserProfile), typeof(MusicProfile), typeof(DiscountProfile));
+            services.AddAutoMapper(
+                typeof(UserProfile),
+                typeof(MusicProfile),
+                typeof(DiscountProfile),
+                typeof(CategoryProfile)
+                
+                );
          
         }
     }

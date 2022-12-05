@@ -34,9 +34,16 @@ namespace MusicShop.WebHost.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create(CategoryDTO dto)
+        public IActionResult Create([FromBody] CategoryDTO dto)
         {
             return Ok(_categoryService.Create(dto));
+        }
+
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            _categoryService.Delete(id);
+            return Ok();
         }
     }
 }
