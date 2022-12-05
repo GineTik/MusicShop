@@ -8,7 +8,11 @@ namespace MusicShop.WebHost.AutoMapper.Profiles
     {
         public MusicProfile()
         {
-            CreateMap<MusicDTO, Music>();
+           
+            CreateMap<Music, MusicDTO>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.Id))
+                .ReverseMap();
         }
     }
 }

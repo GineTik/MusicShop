@@ -6,11 +6,11 @@ namespace MusicShop.Services.MusicServices
 {
     public interface IDiscountService
     {
-        Discount Create(DiscountDTO dto);
-        bool Remove(int id);
-        IEnumerable<Discount> GetAll();
-        IEnumerable<Discount> GetAllByUserId(int userId);
-        IEnumerable<Discount> GetAllByMusicId(int musicId);
-        IEnumerable<Discount> GetAllAvailableDiscountOfUserForMusic(int userId, int musicId);
+        DiscountDTO Create(DiscountDTO dto);
+        bool Remove(DiscountDTO discount);
+        IEnumerable<DiscountDTO> GetAll();
+        IEnumerable<DiscountDTO> GetAllByUser(UserDTO user);
+        IEnumerable<DiscountDTO> GetAllByMusicId(MusicDTO music);
+        IEnumerable<DiscountDTO> GetAllAvailableDiscountOfUserForMusic(UserDTO user, MusicDTO music);
     }
 }

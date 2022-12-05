@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicShop.DataAccess", "Mus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicShop.Services", "MusicShop.Services\MusicShop.Services.csproj", "{947EA03D-66BD-408F-908E-21BFCFF5FE8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicShop.Tests", "MusicShop.Tests\MusicShop.Tests.csproj", "{94A0AB51-67B1-4B6B-9A38-C6EF233E4212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicShop.Tests", "MusicShop.Tests\MusicShop.Tests.csproj", "{94A0AB51-67B1-4B6B-9A38-C6EF233E4212}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

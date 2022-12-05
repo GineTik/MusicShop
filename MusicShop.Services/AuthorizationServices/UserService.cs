@@ -37,23 +37,24 @@ namespace MusicShop.Services.AuthorizationServices
             _validator = validator;
         }
 
-        public User AddUser(UserDTO userDTO)
+        private User AddUser(UserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
 
             // важливо КОЛИ додаємо роль (до генерації JWT)
             user.Role = _unitOfWork.Roles.GetRoleUser();
+
             return _unitOfWork.Users.Add(user);
         }
 
-        public User GetUser(int id)
+        public UserDTO GetUser(int id)
         {
-            return _unitOfWork.Users.GetById(id);
+            return _mapper.Map<UserDTO>(_unitOfWork.Users.GetById(id));
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserDTO> GetAll()
         {
-            return _unitOfWork.Users.GetAll();
+            return _mapper.Map<IEnumerable<UserDTO> >(_unitOfWork.Users.GetAll());
         }
 
         public UserResponse TryLogin(UserDTO dto)
@@ -90,6 +91,7 @@ namespace MusicShop.Services.AuthorizationServices
             if (user != null)
                 throw new RegistrationException();
             
+
             var addedUser = AddUser(dto);
             var token = _tokenService.BuildToken(addedUser);
 
@@ -102,17 +104,17 @@ namespace MusicShop.Services.AuthorizationServices
             };
         }
 
-        public Order OrderMusic(User user, Music music)
+        public OrderDTO OrderMusic(UserDTO user, MusicDTO music)
         {
             throw new System.NotImplementedException();
         }
 
-        public void CancleOrderMusic(User user, Music music)
+        public void CancleOrderMusic(UserDTO user, MusicDTO music)
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetAllOrders(User user)
+        public IEnumerable<OrderDTO> GetAllOrders(UserDTO user)
         {
             throw new System.NotImplementedException();
         }

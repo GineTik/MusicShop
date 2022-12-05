@@ -22,6 +22,7 @@ namespace MusicShop.Core.Entities
         public DateTime ExpirationDate { get; set; }
 
         public int UserId { get; set; }
+        public User User { get; set; }
 
         public IList<Music> Musics { get; set; }
     }

@@ -5,6 +5,7 @@ namespace MusicShop.Core.DTO
 {
     public class DiscountDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public decimal Amount { get; set; }
         public DiscountType DiscountType { get; set; }
