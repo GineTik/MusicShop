@@ -13,7 +13,7 @@ namespace MusicShop.WebHost.AutoMapper.Profiles
                 .ForMember(
                     dest => dest.Musics, 
                     opt => opt.MapFrom(src => src.MusicIds.Select(id => new Music { Id = id }))
-                );
+                ).ReverseMap();
         }
     }
 }

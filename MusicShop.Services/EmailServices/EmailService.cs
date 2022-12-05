@@ -24,7 +24,7 @@ namespace MusicShop.Services.EmailServices
             _emailSender.Send(user.Email, subject, htmlContent.Render());
         }
 
-        public void SendEmail(User user, string htmlBodyTemplate, string subject = null)
+        public void SendEmail(UserDTO user, string htmlBodyTemplate, string subject = null)
         {
             _emailSender.Send(user.Email, subject, htmlBodyTemplate);
         }

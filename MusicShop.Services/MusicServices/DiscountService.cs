@@ -18,35 +18,42 @@ namespace MusicShop.Services.MusicServices
             _mapper = mapper;
         }
 
-        public Discount Create(DiscountDTO dto)
+        public DiscountDTO Create(DiscountDTO dto)
         {
             var discount = _mapper.Map<Discount>(dto);
-            return _unitOfWork.Discounts.Add(discount);
+            return _mapper.Map<DiscountDTO>(_unitOfWork.Discounts.Add(discount));
         }
 
-        public IEnumerable<Discount> GetAll()
+        public IEnumerable<DiscountDTO> GetAll()
         {
-            return _unitOfWork.Discounts.GetAll();
+            return _mapper.Map<IEnumerable<DiscountDTO>>( _unitOfWork.Discounts.GetAll());
         }
 
-        public IEnumerable<Discount> GetAllAvailableDiscountOfUserForMusic(int userId, int musicId)
+        public IEnumerable<DiscountDTO> GetAllAvailableDiscountOfUserForMusic(UserDTO user, MusicDTO music)
         {
-            return _unitOfWork.Discounts.GetAllAvailableDiscountOfUserForMusic(userId, musicId);
+            return _mapper.Map<IEnumerable<DiscountDTO>>( 
+                _unitOfWork.Discounts.GetAllAvailableDiscountOfUserForMusic(user.Id, music.Id)
+                );
         }
 
-        public IEnumerable<Discount> GetAllByMusicId(int musicId)
+        public IEnumerable<DiscountDTO> GetAllByMusicId(MusicDTO music)
         {
-            return _unitOfWork.Discounts.GetAllByMusicId(musicId);
+            return _mapper.Map<IEnumerable<DiscountDTO>>(
+                _unitOfWork.Discounts.GetAllByMusicId(music.Id)
+                );
         }
 
-        public IEnumerable<Discount> GetAllByUserId(int userId)
+
+        public IEnumerable<DiscountDTO> GetAllByUser(UserDTO user)
         {
-            return _unitOfWork.Discounts.GetAllByUserId(userId);
+            return _mapper.Map<IEnumerable<DiscountDTO>>(
+                _unitOfWork.Discounts.GetAllByUserId(user.Id)
+                ); 
         }
 
-        public bool Remove(int id)
+        public bool Remove(DiscountDTO discount)
         {
-            return _unitOfWork.Discounts.Remove(id);
+            return _unitOfWork.Discounts.Remove(discount.Id);
         }
     }
 }

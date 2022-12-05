@@ -9,9 +9,10 @@ namespace MusicShop.WebHost.AutoMapper.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserRequest, UserDTO>();
+            CreateMap<UserRequest, UserDTO>().ReverseMap();
             CreateMap<UserDTO, User>()
                 .ConvertUsing<UserConvertor>();
+            CreateMap<User, UserDTO>();
         }
     }
 }
