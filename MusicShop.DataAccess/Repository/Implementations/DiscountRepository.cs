@@ -13,7 +13,7 @@ namespace MusicShop.DataAccess.Repository.Implementations
 
         public IEnumerable<Discount> GetAllAvailableDiscountOfUserForMusic(int userId, int musicId)
         {
-            var userDiscounts = _db.Discounts.Where(x => x.UserId == userId);
+            var userDiscounts = _db.Discounts.Where(x => x.Users.Any(u => u.Id == userId));
             return userDiscounts.Where(x => x.Musics.Any(m => m.Id == musicId));
         }
 
