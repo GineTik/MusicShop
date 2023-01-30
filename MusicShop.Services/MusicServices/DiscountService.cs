@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Internal;
 using MusicShop.Core.DTO;
 using MusicShop.Core.Entities;
 using MusicShop.DataAccess.Repository;
-using MusicShop.DataAccess.Repository.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MusicShop.Services.MusicServices
 {
@@ -26,7 +27,7 @@ namespace MusicShop.Services.MusicServices
 
         public IEnumerable<DiscountDTO> GetAll()
         {
-            return _mapper.Map<IEnumerable<DiscountDTO>>( _unitOfWork.Discounts.GetAll());
+            return _mapper.Map<IEnumerable<DiscountDTO>>(_unitOfWork.Discounts.GetAll());
         }
 
         public IEnumerable<DiscountDTO> GetAllAvailableDiscountOfUserForMusic(UserDTO user, MusicDTO music)
@@ -43,12 +44,21 @@ namespace MusicShop.Services.MusicServices
                 );
         }
 
-
         public IEnumerable<DiscountDTO> GetAllByUser(UserDTO user)
         {
             return _mapper.Map<IEnumerable<DiscountDTO>>(
                 _unitOfWork.Discounts.GetAllByUserId(user.Id)
                 ); 
+        }
+
+        public bool AttachUserToDiscount(int userId, int discountId)
+        {
+            return _unitOfWork.Discounts.AttachUserToDiscount(userId, discountId);
+        }
+
+        public bool AttachMusicToDiscount(int musicId, int discountId)
+        {
+            return _unitOfWork.Discounts.AttachMusicToDiscount(musicId, discountId);
         }
 
         public bool Remove(DiscountDTO discount)

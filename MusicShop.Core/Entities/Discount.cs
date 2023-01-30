@@ -21,7 +21,7 @@ namespace MusicShop.Core.Entities
         [GreaterThanUtcNow]
         public DateTime ExpirationDate { get; set; }
 
-        public IList<User> Users { get; set; }
-        public IList<Music> Musics { get; set; }
+        public IList<User> Users { get; set; } = new List<User>();
+        public IList<Music> Musics { get; set; } = new List<Music>();
     }
 }

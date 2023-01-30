@@ -8,6 +8,8 @@ namespace MusicShop.Services.MusicServices
     {
         DiscountDTO Create(DiscountDTO dto);
         bool Remove(DiscountDTO discount);
+        bool AttachUserToDiscount(int userId, int discountId);
+        bool AttachMusicToDiscount(int musicId, int discountId);
         IEnumerable<DiscountDTO> GetAll();
         IEnumerable<DiscountDTO> GetAllByUser(UserDTO user);
         IEnumerable<DiscountDTO> GetAllByMusicId(MusicDTO music);

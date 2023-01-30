@@ -9,11 +9,27 @@ namespace MusicShop.WebHost.AutoMapper.Profiles
     {
         public DiscountProfile()
         {
+            //AllowNullCollections = true;
+
             CreateMap<DiscountDTO, Discount>()
                 .ForMember(
-                    dest => dest.Musics, 
-                    opt => opt.MapFrom(src => src.MusicIds.Select(id => new Music { Id = id }))
-                ).ReverseMap();
+                    dest => dest.Musics,
+                    opt => opt.MapFrom(src => src.MusicsIds.Select(id => new Music { Id = id }))
+                )
+                .ForMember(
+                    dest => dest.Users,
+                    opt => opt.MapFrom(src => src.UsersIds.Select(id => new User { Id = id }))
+                );
+
+            CreateMap<Discount, DiscountDTO>()
+                .ForMember(
+                    dest => dest.MusicsIds,
+                    opt => opt.MapFrom(src => src.Musics.Select(m => m.Id))
+                )
+                .ForMember(
+                    dest => dest.UsersIds,
+                    opt => opt.MapFrom(src => src.Users.Select(m => m.Id))
+                );
         }
     }
 }

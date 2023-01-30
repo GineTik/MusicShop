@@ -8,5 +8,7 @@ namespace MusicShop.DataAccess.Repository.Interfaces
         IEnumerable<Discount> GetAllByUserId(int userId);
         IEnumerable<Discount> GetAllByMusicId(int musicId);
         IEnumerable<Discount> GetAllAvailableDiscountOfUserForMusic(int userId, int musicId);
+        bool AttachUserToDiscount(int discountId, int userId);
+        bool AttachMusicToDiscount(int discountId, int musicId);
     }
 }

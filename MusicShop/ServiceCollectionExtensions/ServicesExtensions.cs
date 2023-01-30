@@ -20,6 +20,7 @@ namespace MusicShop.WebHost.ServiceCollectionExtensions
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IMusicService, MusicService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IDiscountService, DiscountService>();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPasswordService, PasswordService>();
